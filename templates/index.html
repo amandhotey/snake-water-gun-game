@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snake Water Gun Game</title>
+    <link rel="stylesheet" href="{{ url_for ('static',filename='css/style.css')}}">
+</head>
+<body>
+    <div class="game-container">
+        <h1>Snake Water Gun Game</h1>
+        <p>Choose your move:</p>
+        <button onclick="play('s')">Snake</button>
+        <button onclick="play('w')">Water</button>
+        <button onclick="play('g')">Gun</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        async function play(choice) {
+            try {
+                const response = await fetch('/play', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ choice: choice }),
+                });
+                const data = await response.json();
+                document.getElementById('result').innerHTML = data.result;
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('result').innerHTML = 'An error occurred. Please try again.';
+            }
+        }
+    </script>
+</body>
+</html>
